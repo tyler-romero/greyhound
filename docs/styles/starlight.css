@@ -1,0 +1,107 @@
+@import "katex/dist/katex.min.css";
+
+:root {
+  --sl-content-width: 54rem;
+  --sl-text-5xl: 3rem;
+  --sl-text-4xl: 2.35rem;
+}
+
+.site-title {
+  font-weight: 800;
+}
+
+.site-title img {
+  image-rendering: pixelated;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3 {
+  letter-spacing: 0;
+}
+
+.sl-markdown-content h2 {
+  border-top: 1px solid var(--sl-color-gray-5);
+  padding-top: 1.35rem;
+}
+
+.sl-markdown-content table {
+  font-size: 0.9rem;
+}
+
+.sl-markdown-content img {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 8px;
+  background: var(--sl-color-black);
+}
+
+.expressive-code .frame .header {
+  display: none;
+}
+
+.expressive-code .frame pre {
+  border-top: 0;
+}
+
+.expressive-code .frame .copy {
+  top: 0.6rem;
+}
+
+.plot-frame {
+  width: 100%;
+  height: min(48rem, 82vh);
+  min-height: 38rem;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 8px;
+  background: var(--sl-color-black);
+  overflow: hidden;
+}
+
+.gpu-benchmark-picker {
+  position: relative;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.gpu-benchmark-picker [data-gpu-hidden] {
+  position: absolute;
+  width: 100%;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.gpu-picker-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.75rem;
+  color: var(--sl-color-gray-2);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.gpu-picker-control select {
+  max-width: min(100%, 24rem);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 6px;
+  padding: 0.4rem 2rem 0.4rem 0.65rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-white);
+  font: inherit;
+}
+
+.hero-table table {
+  width: 100%;
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --sl-text-5xl: 2.35rem;
+    --sl-text-4xl: 2rem;
+  }
+
+  .plot-frame {
+    height: 32rem;
+    min-height: 32rem;
+  }
+}

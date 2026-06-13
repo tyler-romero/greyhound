@@ -1,0 +1,125 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greyhound-kernels"
+description = "High-performance, fused GPU kernels for PyTorch training workloads"
+dynamic = ["version"]
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+authors = [
+    {name = "Tyler Romero", email = "tyler.alexander.romero@gmail.com"}
+]
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.7.1",
+    "click>=8.0",
+    "rich>=13.0",
+    "nvidia-cutlass-dsl[cu13]==4.5.2; sys_platform != 'darwin'",
+]
+license = "Apache-2.0"
+
+[project.urls]
+Homepage = "https://github.com/tyler-romero/greyhound"
+Repository = "https://github.com/tyler-romero/greyhound"
+Changelog = "https://github.com/tyler-romero/greyhound/blob/main/CHANGELOG.md"
+Documentation = "https://tyler-romero.github.io/greyhound/"
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "ty",
+    "pytest",
+    "pytest-cov",
+    "build",
+    "setuptools",
+    "wheel",
+    "packaging",
+    "matplotlib",
+    "plotly>=6.7.0",
+    "griffe",
+]
+modal = [
+    "modal",
+]
+quack = [
+    "quack-kernels; sys_platform != 'darwin'",
+]
+causal-conv1d = [
+    "causal-conv1d; sys_platform != 'darwin'",
+]
+thirdparty = [
+    "dion @ git+https://github.com/microsoft/dion.git ; sys_platform != 'darwin'",
+    "gram-newton-schulz; sys_platform != 'darwin'",
+    "liger-kernel; sys_platform != 'darwin'",
+    "quack-kernels; sys_platform != 'darwin'",
+    "flash-linear-attention; sys_platform != 'darwin'",
+]
+
+[tool.uv]
+override-dependencies = [
+    "nvidia-cutlass-dsl[cu13]==4.5.2; sys_platform != 'darwin'",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+greyhound = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "greyhound.version.VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["greyhound*"]
+exclude = [
+    "*.tests",
+    "*.tests.*",
+    "tests.*",
+    "docs*",
+    "scripts*",
+    "src/benchmarks",
+    "src/tests"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.isort]
+known-first-party = ["greyhound"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ty.src]
+exclude = [
+    "scripts/generate_api_docs.py",
+    "src/greyhound/kernels/causal_conv1d.py",
+    "src/greyhound/kernels/cross_entropy.py",
+    "src/greyhound/kernels/logprobs.py",
+]
+
+[tool.pytest.ini_options]
+testpaths = "src/tests/"
+python_classes = [
+  "Test*",
+  "*Test"
+]
+log_format = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+log_level = "DEBUG"
+log_cli = false
+log_cli_level = "DEBUG"
+markers = ["gpu"]

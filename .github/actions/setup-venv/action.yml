@@ -1,0 +1,34 @@
+name: Python uv environment
+description: Set up a uv-managed Python environment
+inputs:
+  python-version:
+    description: The Python version to use
+    required: true
+  cache-prefix:
+    description: Update this to invalidate the cache
+    required: true
+    default: v0
+runs:
+  using: composite
+  steps:
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        cache-dependency-glob: uv.lock
+        cache-suffix: ${{ inputs.cache-prefix }}
+
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - shell: bash
+      run: |
+        uv sync --extra dev --frozen --python ${{ inputs.python-version }}
+
+    - shell: bash
+      run: |
+        echo "✓ Installed $(uv run python --version) environment"
+        echo "Packages:"
+        uv tree --depth 1
