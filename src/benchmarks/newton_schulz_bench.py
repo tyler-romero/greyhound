@@ -125,7 +125,7 @@ def bench_speed_newton_schulz(
         fn = compile_for_benchmark(fn)
 
     def bench_fn():
-        return fn(g)  # ty:ignore[missing-argument]
+        return fn(g)
 
     bench_fn()
     return do_bench(bench_fn, quantiles=QUANTILES)
