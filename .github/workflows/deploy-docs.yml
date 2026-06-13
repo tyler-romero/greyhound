@@ -1,9 +1,9 @@
 name: Deploy Docs
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
     name: Build docs
     runs-on: ubuntu-latest
     env:
-      ASTRO_SITE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      ASTRO_SITE: https://www.tylerromero.com
       ASTRO_BASE: /${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v6
