@@ -8,15 +8,21 @@ inputs:
     description: Update this to invalidate the cache
     required: true
     default: v0
+  save-cache:
+    description: Whether to save the uv cache after the job
+    required: false
+    default: "true"
 runs:
   using: composite
   steps:
     - name: Setup uv
       uses: astral-sh/setup-uv@v6
       with:
+        python-version: ${{ inputs.python-version }}
         enable-cache: true
         cache-dependency-glob: uv.lock
-        cache-suffix: ${{ inputs.cache-prefix }}
+        cache-suffix: ${{ inputs.cache-prefix }}-py${{ inputs.python-version }}
+        save-cache: ${{ inputs.save-cache }}
 
     - name: Setup Python
       uses: actions/setup-python@v6
