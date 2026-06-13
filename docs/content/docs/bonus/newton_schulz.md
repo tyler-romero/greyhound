@@ -45,10 +45,13 @@ and shape as the input.
 ## Provider requirements
 
 At runtime, `orthogonalize_via_newton_schulz` requires Quack symmetric GEMM support on
-the current CUDA device. Install the Quack optional dependency:
+the current CUDA device. Quack's symmetric GEMM path currently requires CUDA and an
+SM90-or-newer NVIDIA GPU.
+
+Install the Quack extra:
 
 ```bash
-pip install -e ".[quack]"
+pip install "greyhound-kernels[quack]"
 ```
 
 ## Usage

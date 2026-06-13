@@ -82,8 +82,9 @@ uv run --extra modal python scripts/run_modal_benchmarks.py \
 
 If no benchmark is specified, the runner executes all known benchmark entry points with
 their default options. The Modal image installs the project dependencies plus the
-`thirdparty` optional dependency group so optional providers are available remotely.
-Use `--extra` to choose a narrower dependency set for the remote image:
+`thirdparty` uv dependency group so optional comparison providers are available
+remotely. Use `--skip-thirdparty` for a minimal Modal-only image, or use `--extra`
+and `--group` to choose a narrower dependency set for the remote image:
 
 ```bash
 uv run --extra modal python scripts/run_modal_benchmarks.py \
@@ -93,9 +94,8 @@ uv run --extra modal python scripts/run_modal_benchmarks.py \
 ```
 
 The `--extra` flag can be repeated, and the `modal` extra is added automatically.
-Install `causal-conv1d` explicitly with `--extra causal-conv1d` when running that
-comparison provider. Add `--plot-after` to regenerate documentation plots after the
-remote CSV rows are merged.
+The `--group` flag can be repeated for uv dependency groups such as `thirdparty`.
+Add `--plot-after` to regenerate documentation plots after the remote CSV rows are merged.
 
 ## Metrics
 

@@ -29,8 +29,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = REPO_ROOT / "src"
 DEFAULT_CSV = SRC_DIR / "benchmarks" / "data" / "benchmark_data.csv"
 DEFAULT_REMOTE_CSV = "/tmp/greyhound_modal_benchmark_data.csv"
-DEFAULT_EXTRAS = ("modal", "thirdparty")
-AVAILABLE_EXTRAS = ("modal", "quack", "thirdparty", "causal-conv1d")
+DEFAULT_EXTRAS = ("modal",)
+DEFAULT_GROUPS = ("thirdparty",)
+AVAILABLE_EXTRAS = ("modal", "quack")
+AVAILABLE_GROUPS = ("thirdparty",)
 DEFAULT_BENCHMARKS = [
     "src/benchmarks/causal_conv1d_bench.py",
     "src/benchmarks/cross_entropy_with_grad_bench.py",
@@ -65,10 +67,7 @@ def normalize_extras(raw_extras: tuple[str, ...], skip_thirdparty: bool) -> list
     if raw_extras and skip_thirdparty:
         raise click.UsageError("Use either --extra or --skip-thirdparty, not both.")
 
-    if skip_thirdparty:
-        selected = ["modal"]
-    else:
-        selected = list(raw_extras or DEFAULT_EXTRAS)
+    selected = ["modal"] if skip_thirdparty else list(raw_extras or DEFAULT_EXTRAS)
 
     if "modal" not in selected:
         selected.insert(0, "modal")
@@ -80,8 +79,21 @@ def normalize_extras(raw_extras: tuple[str, ...], skip_thirdparty: bool) -> list
     return deduped
 
 
+def normalize_groups(raw_groups: tuple[str, ...], skip_thirdparty: bool) -> list[str]:
+    if raw_groups and skip_thirdparty:
+        raise click.UsageError("Use either --group or --skip-thirdparty, not both.")
+
+    selected = [] if skip_thirdparty else list(raw_groups or DEFAULT_GROUPS)
+    deduped = []
+    for group in selected:
+        if group not in deduped:
+            deduped.append(group)
+    return deduped
+
+
 def build_modal_image(
     extras: list[str],
+    groups: list[str],
     python_version: str,
     base_image: str,
 ) -> Any:
@@ -106,7 +118,7 @@ def build_modal_image(
 
     return (
         image.env({"CC": "gcc", "CXX": "g++"})
-        .uv_sync(extras=extras)
+        .uv_sync(extras=extras, groups=groups)
         .add_local_dir(REPO_ROOT, remote_path="/root/greyhound", ignore=ignore)
     )
 
@@ -193,7 +205,17 @@ def parse_csv_text(csv_text: str) -> list[dict[str, str]]:
     type=click.Choice(AVAILABLE_EXTRAS),
     help=(
         "Project optional dependency extra to install in the Modal image. May be repeated. "
-        "Defaults to modal + thirdparty. The modal extra is added automatically."
+        "Defaults to modal. The modal extra is added automatically."
+    ),
+)
+@click.option(
+    "--group",
+    "groups",
+    multiple=True,
+    type=click.Choice(AVAILABLE_GROUPS),
+    help=(
+        "Project dependency group to install in the Modal image. May be repeated. "
+        "Defaults to thirdparty."
     ),
 )
 @click.option(
@@ -211,17 +233,22 @@ def main(
     output_csv: Path,
     remote_csv: str,
     extras: tuple[str, ...],
+    groups: tuple[str, ...],
     skip_thirdparty: bool,
 ) -> None:
     benchmark_commands = normalize_benchmark_commands(benchmark)
     selected_extras = normalize_extras(extras, skip_thirdparty)
+    selected_groups = normalize_groups(groups, skip_thirdparty)
     if base_image == "auto":
-        base_image = "slim" if selected_extras == ["modal"] else "cuda-devel"
+        base_image = (
+            "slim" if selected_extras == ["modal"] and not selected_groups else "cuda-devel"
+        )
 
     modal = import_modal()
     app = modal.App("greyhound-modal-benchmarks")
     image = build_modal_image(
         extras=selected_extras,
+        groups=selected_groups,
         python_version=python_version,
         base_image=base_image,
     )

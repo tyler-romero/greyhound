@@ -60,10 +60,16 @@ cd greyhound
 pip install -e ".[dev]"
 ```
 
-With optional benchmark providers:
+With the Quack bonus and benchmark provider:
 
 ```bash
-pip install -e ".[dev,thirdparty]"
+pip install -e ".[dev,quack]"
+```
+
+With the full local benchmark provider set:
+
+```bash
+uv sync --extra dev --group thirdparty
 ```
 
 With Modal benchmark tooling:

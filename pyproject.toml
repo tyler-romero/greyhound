@@ -18,19 +18,13 @@ authors = [
     {name = "Tyler Romero", email = "tyler.alexander.romero@gmail.com"}
 ]
 requires-python = ">=3.11"
+license = "Apache-2.0"
 dependencies = [
     "torch>=2.7.1",
     "click>=8.0",
     "rich>=13.0",
     "nvidia-cutlass-dsl[cu13]==4.5.2; sys_platform != 'darwin'",
 ]
-license = "Apache-2.0"
-
-[project.urls]
-Homepage = "https://github.com/tyler-romero/greyhound"
-Repository = "https://github.com/tyler-romero/greyhound"
-Changelog = "https://github.com/tyler-romero/greyhound/blob/main/CHANGELOG.md"
-Documentation = "https://tyler-romero.github.io/greyhound/"
 
 [project.optional-dependencies]
 dev = [
@@ -52,16 +46,22 @@ modal = [
 quack = [
     "quack-kernels; sys_platform != 'darwin'",
 ]
-causal-conv1d = [
-    "causal-conv1d; sys_platform != 'darwin'",
-]
+
+[dependency-groups]
 thirdparty = [
+    "causal-conv1d; sys_platform != 'darwin'",
     "dion @ git+https://github.com/microsoft/dion.git ; sys_platform != 'darwin'",
+    "flash-linear-attention; sys_platform != 'darwin'",
     "gram-newton-schulz; sys_platform != 'darwin'",
     "liger-kernel; sys_platform != 'darwin'",
     "quack-kernels; sys_platform != 'darwin'",
-    "flash-linear-attention; sys_platform != 'darwin'",
 ]
+
+[project.urls]
+Homepage = "https://github.com/tyler-romero/greyhound"
+Repository = "https://github.com/tyler-romero/greyhound"
+Changelog = "https://github.com/tyler-romero/greyhound/blob/main/CHANGELOG.md"
+Documentation = "https://tyler-romero.github.io/greyhound/"
 
 [tool.uv]
 override-dependencies = [

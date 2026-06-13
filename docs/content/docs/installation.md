@@ -45,42 +45,8 @@ pip install -e ".[dev]"
 
 ## Optional dependencies
 
-For benchmarking against third-party kernel libraries (Linux only):
-
-### uv
-
-```bash
-uv sync --extra thirdparty
-```
-
-### pip
-
-```bash
-pip install -e ".[thirdparty]"
-```
-
-This installs [Dion](https://github.com/microsoft/dion),
-[liger-kernel](https://github.com/linkedin/liger-kernel),
-[quack-kernels](https://github.com/Dao-AILab/quack),
-[gram-newton-schulz](https://github.com/Dao-AILab/gram-newton-schulz),
-[flash-linear-attention](https://github.com/fla-org/flash-linear-attention) for
-comparison benchmarks.
-
-For only the `causal-conv1d` comparison provider:
-
-### uv
-
-```bash
-uv sync --extra causal-conv1d
-```
-
-### pip
-
-```bash
-pip install -e ".[causal-conv1d]"
-```
-
-For only the Quack dependency used by bonus Newton-Schulz utilities:
+For the Quack dependency used by bonus Newton-Schulz utilities and Quack
+comparison benchmarks:
 
 ### uv
 
@@ -93,6 +59,20 @@ uv sync --extra quack
 ```bash
 pip install -e ".[quack]"
 ```
+
+For the full benchmark provider set:
+
+```bash
+uv sync --extra dev --group thirdparty
+```
+
+This uv-only dependency group installs comparison providers used by benchmark scripts, such as
+[Dion](https://github.com/microsoft/dion),
+[liger-kernel](https://github.com/linkedin/liger-kernel),
+[gram-newton-schulz](https://github.com/Dao-AILab/gram-newton-schulz),
+[flash-linear-attention](https://github.com/fla-org/flash-linear-attention), and
+`causal-conv1d`. The group is intentionally not published as a Greyhound package
+extra because PyPI rejects direct Git dependencies in uploaded package metadata.
 
 For Modal benchmark execution:
 
