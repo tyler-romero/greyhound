@@ -15,7 +15,7 @@ def _get_gram_newton_schulz(epsilon: float) -> GramNewtonSchulz:
     assert has_gram_newton_schulz, "gram-newton-schulz is not installed"
     return GramNewtonSchulz(
         ns_epsilon=epsilon,
-        ns_coefficients=POLAR_EXPRESS_COEFFICIENTS,
+        ns_coefficients=[list(coefficients) for coefficients in POLAR_EXPRESS_COEFFICIENTS],
         gram_newton_schulz_reset_iterations=[2],
     )
 

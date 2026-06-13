@@ -112,6 +112,9 @@ exclude = [
     "src/greyhound/kernels/logprobs.py",
 ]
 
+[tool.ty.rules]
+unresolved-import = "ignore"
+
 [tool.pytest.ini_options]
 testpaths = "src/tests/"
 python_classes = [
