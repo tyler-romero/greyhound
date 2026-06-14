@@ -1,5 +1,9 @@
 # Greyhound
 
+<p align="center">
+  <img src="docs/public/assets/logo.png" alt="Greyhound logo" width="180">
+</p>
+
 High-performance fused GPU kernels for PyTorch training workloads. Greyhound
 implements standalone CuTe DSL kernels, wraps them as PyTorch custom ops, and
 exposes them through `greyhound.nn.functional` plus a small set of `nn.Module`

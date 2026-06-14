@@ -3,6 +3,8 @@ title: greyhound
 description: High-performance GPU kernels written in CuTe DSL.
 hero:
   tagline: High-performance GPU kernels written in CuTe DSL.
+  image:
+    html: '<img src="assets/logo.png" alt="Greyhound logo" width="240" height="240" loading="eager" decoding="async">'
   actions:
     - text: Get Started
       link: installation/
