@@ -23,7 +23,7 @@ jobs:
       ASTRO_SITE: https://www.tylerromero.com
       ASTRO_BASE: /${{ github.event.repository.name }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Setup Node
         uses: actions/setup-node@v6
